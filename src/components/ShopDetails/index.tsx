@@ -81,15 +81,49 @@ const ShopDetails = () => {
   );
 
   const product = alreadyExist ? JSON.parse(alreadyExist) : productFromStorage;
+  const [reviews, setReviews] = useState<any[]>([]);
 
   useEffect(() => {
     localStorage.setItem("productDetails", JSON.stringify(product));
   }, [product]);
 
+  useEffect(() => {
+    if (!product?._id) return;
+
+    fetch(`http://localhost:3000/api/review/${product._id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setReviews(data.reviews || []);
+      })
+      .catch((err) => console.log(err));
+  }, [product]);
+  
   // pass the product here when you get the real data.
   const handlePreviewSlider = () => {
     openPreviewModal();
   };
+
+  <div className="mt-20 border-t pt-10">
+    <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
+
+    {reviews.length === 0 && (
+      <p className="text-gray-500">This product has no reviews yet.</p>
+    )}
+
+    <div className="space-y-6">
+      {reviews.map((review) => (
+        <div key={review._id} className="border-b pb-5">
+          <div className="flex items-center gap-3 mb-2">
+            <p className="font-semibold">{review.userName}</p>
+            <span className="text-yellow-500">
+              {"⭐".repeat(review.rating)}
+            </span>
+          </div>
+          <p className="text-gray-600">{review.comment}</p>
+        </div>
+      ))}
+    </div>
+  </div>
 
   return (
     <>
