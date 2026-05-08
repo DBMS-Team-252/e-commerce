@@ -1,16 +1,11 @@
-import Home from "@/components/Home";
+import { redirect } from "next/navigation";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "NextCommerce | Nextjs E-commerce template",
-  description: "This is Home for NextCommerce Template",
-  // other metadata
+  title: "Shop | BTL DBMS E-Commerce",
+  description: "Xem danh sách sản phẩm",
 };
 
 export default function HomePage() {
-  return (
-    <>
-      <Home />
-    </>
-  );
+  redirect("/shop-with-sidebar");
 }
